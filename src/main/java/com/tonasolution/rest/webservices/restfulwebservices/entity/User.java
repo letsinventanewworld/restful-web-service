@@ -11,9 +11,8 @@ public class User {
 	private Date birthDate;
 
 	
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
+	protected User() {
+		
 	}
 
 
