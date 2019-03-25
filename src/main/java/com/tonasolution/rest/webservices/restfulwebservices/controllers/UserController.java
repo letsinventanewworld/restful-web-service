@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tonasolution.rest.webservices.restfulwebservices.dao.UserDaoService;
 import com.tonasolution.rest.webservices.restfulwebservices.entity.User;
+import com.tonasolution.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
 
 @RestController
 public class UserController {
@@ -28,7 +29,10 @@ public class UserController {
 	
 	@GetMapping("/users/{id}")
 	public User retreiveUser(@PathVariable int id) {
-		return userDaoService.findOne(id);
+		User user = userDaoService.findOne(id);
+		if(user==null)
+			throw new UserNotFoundException("id-" + id);
+		return user;
 	}
 	
 	@PostMapping("/users")
