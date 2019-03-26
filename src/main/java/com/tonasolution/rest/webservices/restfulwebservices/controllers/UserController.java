@@ -3,9 +3,11 @@ package com.tonasolution.rest.webservices.restfulwebservices.controllers;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +33,21 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{id}")
-	public User retreiveUser(@PathVariable int id) {
+	public Resource<User> retreiveUser(@PathVariable int id) {
 		User user = userDaoService.findOne(id);
 		if(user==null)
-			throw new UserNotFoundException("id-" + id);
-		return user;
+			throw new UserNotFoundException(" id- " + id);
+		
+		Resource<User> resource = new Resource<User>(user);
+		
+		ControllerLinkBuilder linkTo = ControllerLinkBuilder.linkTo(
+				ControllerLinkBuilder
+				.methodOn(this.getClass())
+				.retreiveAllUsers());
+		
+		resource.add(linkTo.withRel("all-users"));
+		
+		return resource;
 	}
 	@DeleteMapping("/users/{id}")
 	public void deleteUser(@PathVariable int id) {
