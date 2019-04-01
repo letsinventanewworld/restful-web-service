@@ -1,13 +1,14 @@
 package com.tonasolution.rest.webservices.restfulwebservices.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@JsonFilter("SomeBeanFilter")
 public class SomeBean {
 	private String value1;
 
 	private String value2;
 	
-	@JsonIgnore
 	private String value3;
 	
 	
