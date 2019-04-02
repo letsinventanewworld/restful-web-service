@@ -22,17 +22,17 @@ import com.tonasolution.rest.webservices.restfulwebservices.entity.User;
 import com.tonasolution.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
 
 @RestController
-public class UserController {
+public class UserJpaController {
 	
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/users")
+	@GetMapping("/jpa/users")
 	public List<User> retreiveAllUsers(){
 		return userService.findAll();
 	}
 	
-	@GetMapping("/users/{id}")
+	@GetMapping("/jpa/users/{id}")
 	public Resource<User> retreiveUser(@PathVariable int id) {
 		User user = userService.findOne(id);
 		if(user==null)
@@ -49,7 +49,7 @@ public class UserController {
 		
 		return resource;
 	}
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/jpa/users/{id}")
 	public void deleteUser(@PathVariable int id) {
 		User user = userService.deleteById(id);
 		if(user==null)
@@ -57,7 +57,7 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/users")
+	@PostMapping("/jpa/users")
 	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 		User savedUser = userService.save(user);
 		
