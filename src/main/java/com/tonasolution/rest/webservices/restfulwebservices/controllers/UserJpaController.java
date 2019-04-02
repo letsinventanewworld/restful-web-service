@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tonasolution.rest.webservices.restfulwebservices.business.UserService;
+import com.tonasolution.rest.webservices.restfulwebservices.entity.Post;
 import com.tonasolution.rest.webservices.restfulwebservices.entity.User;
 import com.tonasolution.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
 
@@ -51,10 +52,7 @@ public class UserJpaController {
 	}
 	@DeleteMapping("/jpa/users/{id}")
 	public void deleteUser(@PathVariable int id) {
-		User user = userService.deleteById(id);
-		if(user==null)
-			throw new UserNotFoundException("id-" + id);
-		
+		userService.deleteById(id);
 	}
 	
 	@PostMapping("/jpa/users")
@@ -66,6 +64,12 @@ public class UserJpaController {
 								.toUri();
 		
 		return ResponseEntity.created(location).build();
+	}
+	
+	@GetMapping("/jpa/users/{id}/posts")
+	public List<Post> getPosts(@PathVariable int id) {
+		User user = userService.findOne(id);
+		return user.getPostes();
 	}
 	
 	

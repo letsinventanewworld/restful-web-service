@@ -47,20 +47,7 @@ public class UserService {
 		return userOptional.get();
 	}
 	
-	public User deleteById(int id) {
-//		Iterator<User> iterator = users.iterator();
-//		
-//		while(iterator.hasNext()) {
-//			User user = iterator.next();
-//			if(user.getId() == id) {
-//				iterator.remove();
-//				return user;
-//			} 
-//		}
-//		
-//		return null;
-		Optional<User> user = userDao.findById(id);
-		userDao.deleteById(user.get().getId());
-		return user.get();
+	public void deleteById(int id) {
+		userDao.findById(id);
 	}
 }
