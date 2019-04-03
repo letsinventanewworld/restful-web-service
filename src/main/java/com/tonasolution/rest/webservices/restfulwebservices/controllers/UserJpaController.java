@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.tonasolution.rest.webservices.restfulwebservices.business.PostService;
 import com.tonasolution.rest.webservices.restfulwebservices.business.UserService;
 import com.tonasolution.rest.webservices.restfulwebservices.entity.Post;
 import com.tonasolution.rest.webservices.restfulwebservices.entity.User;
@@ -27,6 +28,9 @@ public class UserJpaController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PostService postService;
 	
 	@GetMapping("/jpa/users")
 	public List<User> retreiveAllUsers(){
@@ -70,6 +74,23 @@ public class UserJpaController {
 	public List<Post> getPosts(@PathVariable int id) {
 		User user = userService.findOne(id);
 		return user.getPostes();
+	}
+	
+	@PostMapping("/jpa/users/{id}/post")
+	public ResponseEntity<Object> createPost(
+				@PathVariable int id,
+				@RequestBody Post post
+			) {
+		User user = userService.findOne(id);
+		
+		post.setUser(user);
+		postService.save(post);
+		
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+								.buildAndExpand(post.getId())
+								.toUri();
+		
+		return ResponseEntity.created(location).build();
 	}
 	
 	
